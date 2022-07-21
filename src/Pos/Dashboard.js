@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-function Body(props) {
+function Dashboard(props) {
   return (
     <div>
-      <p>Body</p>
+      <p>Dashboard</p>
     </div>
   );
 }
 
-export default Body;
+export default Dashboard;

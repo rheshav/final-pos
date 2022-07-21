@@ -6,7 +6,6 @@ function Sidebar(props) {
   return (
     <div>
       <Logo />
-      <p>Sidebar</p>
       <Menu />
     </div>
   );

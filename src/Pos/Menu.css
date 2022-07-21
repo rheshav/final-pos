@@ -1,3 +1,19 @@
 .menuItem {
-  padding: 4px;
+  padding: 16px;
+  border-radius: 16px;
+  margin-bottom: 4px;
+}
+
+.menuItem a {
+  text-decoration: none;
+  /* color: #808080; */
+  color: black;
+}
+
+.menuItem:hover {
+  background-color: #ffe298;
+}
+
+.menuItem.active {
+  background-color: #ffca40;
 }

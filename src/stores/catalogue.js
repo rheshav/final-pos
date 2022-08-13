@@ -20,38 +20,53 @@ function readCatalogue(id) {
     payload: "",
   });
 
-  const currentData = store.getState().catalogue.Data || [];
+  let resStatus = 0;
+  fetch("http://localhost:3000/catalogue/detail/" + id)
+    .then(function (response) {
+      resStatus = response.status;
+      return response.json();
+    })
+    .then(
+      (response) => {
+        console.log("resStatus", resStatus);
+        switch (resStatus) {
+          case 200:
+            console.log("getDetailCatalogue success", response.data);
+            store.dispatch({
+              type: "READ_CATALOGUE",
+              payload: response.data,
+            });
 
-  const findData = find(currentData, function (o) {
-    return o.id == id;
-  });
+            store.dispatch({
+              type: "SET_ACTION_CATALOGUE",
+              payload: "READED_CATALOGUE",
+            });
+            break;
+        }
+        store.dispatch({
+          type: "SET_LOADING_CATALOGUE",
+          payload: false,
+        });
+      },
+      (error) => {
+        console.log("getDetailCatalogue error", error);
 
-  if (!isEmpty(findData)) {
-    store.dispatch({
-      type: "READ_CATALOGUE",
-      payload: findData,
-    });
+        store.dispatch({
+          type: "SET_MESSAGE_TAG",
+          payload: "error",
+        });
 
-    store.dispatch({
-      type: "SET_ACTION_CATALOGUE",
-      payload: "READED_CATALOGUE",
-    });
-  } else {
-    store.dispatch({
-      type: "SET_ACTION_CATALOGUE",
-      payload: "FAILED_READ_CATALOGUE",
-    });
+        store.dispatch({
+          type: "SET_ACTION_CATALOGUE",
+          payload: "FAILED_READ_CATALOGUE",
+        });
 
-    store.dispatch({
-      type: "SET_MESSAGE",
-      payload: "Gagal lihat katalog id " + id,
-    });
-  }
-
-  store.dispatch({
-    type: "SET_LOADING_CATALOGUE",
-    payload: false,
-  });
+        store.dispatch({
+          type: "SET_LOADING_CATALOGUE",
+          payload: false,
+        });
+      }
+    );
 }
 
 function updateCatalogue(id, input = {}) {
@@ -70,31 +85,80 @@ function updateCatalogue(id, input = {}) {
     payload: "",
   });
 
-  let currentData = store.getState().Data || [];
+  let resStatus = 0;
+  fetch("http://localhost:3000/catalogue/" + id, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(input),
+  })
+    .then(function (response) {
+      resStatus = response.status;
+      return response.json();
+    })
+    .then(
+      (response) => {
+        console.log("resStatus", resStatus);
+        switch (resStatus) {
+          case 201:
+            console.log("putCatalogue success", response.data);
+            store.dispatch({
+              type: "UPDATE_CATALOGUE",
+              payload: input,
+            });
 
-  const filterData = filter(currentData, function (o) {
-    return o.id != id;
-  });
+            store.dispatch({
+              type: "SET_ACTION_CATALOGUE",
+              payload: "UPDATED_CATALOGUE",
+            });
+            break;
+          case 400:
+            console.log("putCatalogue error", response.data);
+            store.dispatch({
+              type: "SET_MESSAGE_TAG",
+              payload: "error",
+            });
 
-  currentData = [...currentData, input];
+            store.dispatch({
+              type: "SET_ACTION_CATALOGUE",
+              payload: "FAILED_UPDATE_CATALOGUE",
+            });
 
-  store.dispatch({
-    type: "UPDATED_CATALOGUE",
-    payload: input,
-  });
+            store.dispatch({
+              type: "SET_VALIDATION",
+              payload: response.data,
+            });
 
-  store.dispatch({
-    type: "SET_ACTION_CATALOGUE",
-    payload: "UPDATED_CATALOGUE",
-  });
+            break;
+        }
+        store.dispatch({
+          type: "SET_LOADING_CATALOGUE",
+          payload: false,
+        });
+      },
+      (error) => {
+        console.log("putCatalogue error", error);
 
-  store.dispatch({
-    type: "SET_LOADING_CATALOGUE",
-    payload: false,
-  });
+        store.dispatch({
+          type: "SET_MESSAGE_TAG",
+          payload: "error",
+        });
+
+        store.dispatch({
+          type: "SET_ACTION_CATALOGUE",
+          payload: "FAILED_UPDATE_CATALOGUE",
+        });
+        store.dispatch({
+          type: "SET_LOADING_CATALOGUE",
+          payload: false,
+        });
+      }
+    );
 }
 
-function createCatalogue(input) {
+function createCatalogue(input, type) {
   store.dispatch({
     type: "SET_LOADING_CATALOGUE",
     payload: true,
@@ -110,44 +174,85 @@ function createCatalogue(input) {
     payload: "",
   });
 
-  const currentData = store.getState().catalogue.Data || [];
+  let resStatus = 0;
+  fetch("http://localhost:3000/catalogue/" + type, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(input),
+  })
+    .then(function (response) {
+      resStatus = response.status;
+      return response.json();
+    })
+    .then(
+      (response) => {
+        console.log("resStatus", resStatus);
+        switch (resStatus) {
+          case 201:
+            console.log("postCatalogue success", response.data);
+            store.dispatch({
+              type: "CREATE_CATALOGUE",
+              payload: input,
+            });
 
-  console.log("currentData", currentData);
+            store.dispatch({
+              type: "SET_ACTION_CATALOGUE",
+              payload: "CREATED_CATALOGUE",
+            });
+            break;
+          case 400:
+            console.log("postCatalogue error", response.data);
+            store.dispatch({
+              type: "SET_MESSAGE_TAG",
+              payload: "error",
+            });
 
-  const newInput = { ...input, id: currentData.length + 1 };
+            store.dispatch({
+              type: "SET_ACTION_CATALOGUE",
+              payload: "FAILED_CREATE_CATALOGUE",
+            });
 
-  currentData.push(newInput);
+            store.dispatch({
+              type: "SET_VALIDATION",
+              payload: response.data,
+            });
 
-  console.log("newInput", newInput);
+            break;
+        }
+        store.dispatch({
+          type: "SET_LOADING_CATALOGUE",
+          payload: false,
+        });
+      },
+      (error) => {
+        console.log("postCatalogue error", error);
 
-  console.log("currentData", currentData);
+        store.dispatch({
+          type: "SET_MESSAGE_TAG",
+          payload: "error",
+        });
 
-  setTimeout(() => {
-    store.dispatch({
-      type: "CREATE_CATALOGUE",
-      payload: newInput,
-    });
+        store.dispatch({
+          type: "SET_ACTION_CATALOGUE",
+          payload: "FAILED_CREATE_CATALOGUE",
+        });
 
-    store.dispatch({
-      type: "SET_CATALOGUE",
-      payload: currentData,
-    });
+        if (error.response) {
+          store.dispatch({
+            type: "SET_VALIDATION",
+            payload: error.response,
+          });
+        }
 
-    store.dispatch({
-      type: "SET_LOADING_CATALOGUE",
-      payload: false,
-    });
-
-    store.dispatch({
-      type: "SET_ACTION_CATALOGUE",
-      payload: "CREATED_CATALOGUE",
-    });
-
-    store.dispatch({
-      type: "SET_LOADING_CATALOGUE",
-      payload: false,
-    });
-  }, 3000);
+        store.dispatch({
+          type: "SET_LOADING_CATALOGUE",
+          payload: false,
+        });
+      }
+    );
 }
 
 function deleteCatalogue(id) {
@@ -166,64 +271,101 @@ function deleteCatalogue(id) {
     payload: "",
   });
 
-  const currentData = store.getState().Data || [];
+  if (window.confirm("Apakah anda yakin ingin menghapus data?")) {
+    const currentData = store.getState().catalogue.Data || [];
 
-  const findData = find(currentData, function (o) {
-    return o.id == id;
-  });
-
-  if (!isEmpty(findData)) {
-    const filterData = filter(currentData, function (o) {
-      return o.id != id;
+    const findData = find(currentData, function (o) {
+      return o._id == id;
     });
 
-    if (filterData) {
-      store.dispatch({
-        type: "DELETE_CATALOGUE",
-        payload: findData,
-      });
+    if (!isEmpty(findData)) {
+      let resStatus = 0;
+      fetch("http://localhost:3000/catalogue/" + id, {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+        .then(function (response) {
+          resStatus = response.status;
+          return response.json();
+        })
+        .then(
+          (response) => {
+            console.log("resStatus", resStatus);
+            switch (resStatus) {
+              case 201:
+                console.log("postCatalogue success", response.data);
+                store.dispatch({
+                  type: "DELETE_CATALOGUE",
+                  payload: response.data,
+                });
 
-      store.dispatch({
-        type: "SET_LOADING_CATALOGUE",
-        payload: false,
-      });
+                store.dispatch({
+                  type: "SET_ACTION_CATALOGUE",
+                  payload: "DELETED_CATALOGUE",
+                });
 
-      store.dispatch({
-        type: "SET_ACTION_CATALOGUE",
-        payload: "DELETED_CATALOGUE",
-      });
-    } else {
-      store.dispatch({
-        type: "SET_ACTION_CATALOGUE",
-        payload: "FAILED_READ_CATALOGUE",
-      });
+                let trashData = store.getState().catalogue.Trash || [];
 
-      store.dispatch({
-        type: "SET_MESSAGE",
-        payload: "Gagal hapus katalog id " + id,
-      });
+                store.dispatch({
+                  type: "SET_TRASH_CATALOGUE",
+                  payload: [...trashData, findData],
+                });
+                break;
+              case 500:
+                console.log("postCatalogue error", response.data);
+                store.dispatch({
+                  type: "SET_MESSAGE_TAG",
+                  payload: "error",
+                });
+
+                store.dispatch({
+                  type: "SET_ACTION_CATALOGUE",
+                  payload: "FAILED_DELETE_CATALOGUE",
+                });
+
+                store.dispatch({
+                  type: "SET_MESSAGE",
+                  payload: response.message,
+                });
+
+                break;
+            }
+            store.dispatch({
+              type: "SET_LOADING_CATALOGUE",
+              payload: false,
+            });
+          },
+          (error) => {
+            console.log("postCatalogue error", error);
+
+            store.dispatch({
+              type: "SET_MESSAGE_TAG",
+              payload: "error",
+            });
+
+            store.dispatch({
+              type: "SET_ACTION_CATALOGUE",
+              payload: "FAILED_DELETE_CATALOGUE",
+            });
+
+            if (error.response) {
+              store.dispatch({
+                type: "SET_VALIDATION",
+                payload: error.response,
+              });
+            }
+
+            store.dispatch({
+              type: "SET_LOADING_CATALOGUE",
+              payload: false,
+            });
+          }
+        );
     }
-  } else {
-    store.dispatch({
-      type: "SET_MESSAGE",
-      payload: "Data tidak ditemukan id " + id,
-    });
-
-    store.dispatch({
-      type: "SET_ACTION_CATALOGUE",
-      payload: "FAILED_READ_CATALOGUE",
-    });
   }
-
-  store.dispatch({
-    type: "SET_ACTION_CATALOGUE",
-    payload: "FAILED_READ_CATALOGUE",
-  });
-
-  store.dispatch({
-    type: "SET_LOADING_CATALOGUE",
-    payload: false,
-  });
 }
 
 function getCatalogue(type) {
@@ -245,29 +387,18 @@ function getCatalogue(type) {
   console.log("getCatalogue request");
 
   store.dispatch({
-    type: "SET_LOADING_CATALOGUE",
-    payload: false,
-  });
-
-  store.dispatch({
     type: "SET_ACTION_CATALOGUE",
     payload: "LOADED_CATALOGUE",
   });
 
-  /*
-
-  fetch(
-    type === "food"
-      ? "https://jsonplaceholder.typicode.com/photos"
-      : "https://jsonplaceholder.typicode.com/posts"
-  )
+  fetch("http://localhost:3000/catalogue/" + type)
     .then((res) => res.json())
     .then(
       (response) => {
-        console.log("getCatalogue success", response);
+        console.log("getCatalogue success", response.data);
         store.dispatch({
           type: "SET_CATALOGUE",
-          payload: response,
+          payload: response.data,
         });
 
         store.dispatch({
@@ -293,10 +424,10 @@ function getCatalogue(type) {
           payload: "FAILED_CATALOGUE",
         });
 
-        if (error.response.status === 400) {
+        if (error.response) {
           store.dispatch({
             type: "SET_VALIDATION",
-            payload: error.response.data,
+            payload: error.response,
           });
         }
 
@@ -306,15 +437,15 @@ function getCatalogue(type) {
         });
       }
     );
-
-    */
 }
 
 function catalogue(
   state = {
     Data: [],
+    Trash: [],
     Created: {},
     Deleted: {},
+    Updated: {},
     Readed: {},
     Loading: false,
     Action: "",
@@ -347,6 +478,13 @@ function catalogue(
     case "SET_CATALOGUE":
       return update(state, {
         Data: {
+          $set: action.payload,
+        },
+      });
+
+    case "SET_TRASH_CATALOGUE":
+      return update(state, {
+        Trash: {
           $set: action.payload,
         },
       });

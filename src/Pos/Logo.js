@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import LogoImg from '../assets/food-logo.png';
+import React, { useEffect, useState } from "react";
+
+import LogoImg from "../assets/logo.png";
 
 function Logo(props) {
   return (
-    <div align="center" style={{ marginTop: 10, marginBottom: 10 }}>
+    <div align="center" style={{ marginBottom: 10 }}>
       <img src={LogoImg} style={{ width: 48 }} />
     </div>
   );

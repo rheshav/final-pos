@@ -1,11 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from "react";
 
 function Footer(props) {
-  return (
-    <div>
-      <p>Footer</p>
-    </div>
-  );
+  return <div>{/*<p>Footer</p>*/}</div>;
 }
 
 export default Footer;

@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import Sidebar from './Sidebar';
-import RightContent from './RightContent';
-import { Container, Row, Col } from 'react-bootstrap';
-import Profile from './Profile';
+import React, { useEffect, useState } from "react";
+import { Container, Row, Col } from "react-bootstrap";
+import SideBar from "./SideBar";
+import RightContent from "./RightContent";
 
 function Pos(props) {
   return (
     <Container style={{ marginTop: 32 }} fluid>
       <Row>
-        <Col md={2}>
-          <Sidebar />
-          <Profile />
+        <Col sm={6} md={2}>
+          <SideBar />
         </Col>
-        <Col md={10}>
+        <Col sm={6} md={10}>
           <RightContent />
         </Col>
       </Row>

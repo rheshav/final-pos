@@ -21,18 +21,15 @@ function Catalogue(props) {
 
   const _input = useSelector((state) => state?.core?.Input) || {};
 
-  const _action = useSelector((state) => state?.catalogue?.Action) || "";
-
   useEffect(() => {
     console.log("LOAD PERTAMA");
-    getCatalogue(props.type);
   }, [props.type]);
 
   useEffect(() => {
-    if (_action === "DELETED_CATALOGUE") {
-      getCatalogue(props.type);
-    }
-  }, [_action]);
+    // if (_data.length === 0) {
+    getCatalogue(props.type);
+    // }
+  }, []);
 
   function openAdd() {
     navigate("/addCatalogue/" + props.type);
@@ -70,27 +67,19 @@ function Catalogue(props) {
           return (
             <Col xs={4} style={{ marginBottom: 20 }}>
               <ListGroup>
-                <ListGroup.Item>ID : {value?._id}</ListGroup.Item>
+                <ListGroup.Item>ID : {value?.id}</ListGroup.Item>
                 <ListGroup.Item>SKU : {value?.sku}</ListGroup.Item>
                 <ListGroup.Item>Nama : {value?.nama}</ListGroup.Item>
-                <ListGroup.Item>Kategori : {value?.kategori}</ListGroup.Item>
-                <ListGroup.Item>
-                  Harga :{" "}
-                  {new Intl.NumberFormat("de-DE", {
-                    style: "currency",
-                    currency: "EUR",
-                  }).format(value?.harga)}
-                </ListGroup.Item>
                 <ListGroup.Item>
                   <Link
                     style={{ fontWeight: "bold" }}
-                    to={"/editCatalogue/" + value?._id}
+                    to={"/editCatalogue/" + value?.id}
                   >
                     Edit
                   </Link>
                   <a
                     style={{ marginLeft: 20, fontWeight: "bold" }}
-                    onClick={() => doDelete(value?._id)}
+                    onClick={() => doDelete(value?.id)}
                   >
                     Delete
                   </a>

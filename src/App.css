@@ -2,6 +2,14 @@
   text-align: center;
 }
 
+.buttonCustom {
+  color: red;
+}
+
+#button1 {
+  font-weight: bold;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

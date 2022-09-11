@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import Logo from './Logo';
-import Menu from './Menu';
+import React, { useEffect, useState } from "react";
+import Logo from "./Logo";
+import Profile from "./Profile";
+import Menu from "./Menu";
 
-function Sidebar(props) {
+function SideBar(props) {
   return (
     <div>
       <Logo />
       <Menu />
+      <Profile />
     </div>
   );
 }
 
-export default Sidebar;
+export default SideBar;

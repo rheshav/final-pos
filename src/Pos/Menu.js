@@ -1,54 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import './Menu.css';
-import { Link, useLocation } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCoffee, faChartLine, faBowlFood, faGear } from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect, useState } from "react";
+import "./Menu.css";
+import { Link, useLocation } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCoffee,
+  faChartLine,
+  faHamburger,
+  faCog,
+} from "@fortawesome/free-solid-svg-icons";
+
 function Menu(props) {
   const menuList = [
+    { name: "Dashboard", icon: faChartLine, path: "" },
+    { name: "Food", icon: faHamburger, path: "food" },
+    { name: "Drink", icon: faCoffee, path: "drink" },
     {
-      name: 'Dashboard',
-      icon: faChartLine,
-      // onClick: () => alert('dashboard'),
-      path: '',
-    },
-    {
-      name: 'Food',
-      icon: faBowlFood,
-      // onClick: () => alert('food'),
-      path: 'food',
-    },
-    {
-      name: 'Drink',
-      icon: faCoffee,
-      // onClick: () => alert('drinks'),
-      path: 'drink',
-    },
-    {
-      name: 'Settings',
-      icon: faGear,
-      // onClick: () => alert('settings'),
-      path: 'settings',
+      name: "Settings",
+      icon: faCog,
+      path: "settings",
     },
   ];
 
   let location = useLocation();
-  console.log('location', location);
 
   return (
     <div>
       {menuList.map((value, key) => {
-        // console.log('value', value, key);
-        const label = value?.name;
+        // console.log("value", value, key);
+        const label = value?.name; //null safe
         const path = value?.path;
-        const isActive = location?.pathname === '/' + path;
+        const isActive = location?.pathname === "/" + path;
         return (
-          <div className={'menuItem ' + (isActive ? 'active' : '')}>
-            <Link to={path}>
+          <Link to={path}>
+            <div className={"menuItem " + (isActive ? "active" : "")}>
               <FontAwesomeIcon icon={value?.icon} style={{ marginRight: 16 }} />
               {label}
-            </Link>
-            {/* <a onClick={value?.onClick}>{label}</a> */}
-          </div>
+            </div>
+          </Link>
         );
       })}
     </div>

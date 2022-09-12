@@ -4,14 +4,13 @@
   margin-bottom: 4px;
 }
 
-.menuItem a {
+a {
   text-decoration: none;
-  /* color: #808080; */
-  color: black;
+  color: #000;
 }
 
-.menuItem:hover {
-  background-color: #ffe298;
+a:hover {
+  color: #808080;
 }
 
 .menuItem.active {

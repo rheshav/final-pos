@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
 function Dashboard(props) {
   return (
     <div>
-      <p>Dashboard</p>
+      <p>Dashboard under maintenance</p>
     </div>
   );
 }

@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import { Container, Row, Col, Button, ListGroup } from "react-bootstrap";
+import { Container, Row, Col, Button, ListGroup } from 'react-bootstrap';
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
 
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link } from 'react-router-dom';
 
-import { getCatalogue, deleteCatalogue } from "../stores/catalogue";
+import { getCatalogue, deleteCatalogue } from '../stores/catalogue';
 
 function Catalogue(props) {
   let navigate = useNavigate();
@@ -21,21 +21,21 @@ function Catalogue(props) {
 
   const _input = useSelector((state) => state?.core?.Input) || {};
 
-  const _action = useSelector((state) => state?.catalogue?.Action) || "";
+  const _action = useSelector((state) => state?.catalogue?.Action) || '';
 
   useEffect(() => {
-    console.log("LOAD PERTAMA");
+    console.log('LOAD PERTAMA');
     getCatalogue(props.type);
   }, [props.type]);
 
   useEffect(() => {
-    if (_action === "DELETED_CATALOGUE") {
+    if (_action === 'DELETED_CATALOGUE') {
       getCatalogue(props.type);
     }
   }, [_action]);
 
   function openAdd() {
-    navigate("/addCatalogue/" + props.type);
+    navigate('/addCatalogue/' + props.type);
   }
 
   function doDelete(_id) {
@@ -46,17 +46,7 @@ function Catalogue(props) {
     <div>
       <Row>
         <Col xs={9}>
-          <p>
-            {_loading
-              ? "Loading..."
-              : "Catalogue " +
-                props?.type +
-                " " +
-                _data.length +
-                " items (" +
-                _trash.length +
-                " items)"}
-          </p>
+          <p>{_loading ? 'Loading...' : 'Catalogue ' + props?.type + ' ' + _data.length + ' items'}</p>
         </Col>
         <Col xs={3}>
           <Button onClick={openAdd} variant="primary">
@@ -75,23 +65,17 @@ function Catalogue(props) {
                 <ListGroup.Item>Nama : {value?.nama}</ListGroup.Item>
                 <ListGroup.Item>Kategori : {value?.kategori}</ListGroup.Item>
                 <ListGroup.Item>
-                  Harga :{" "}
-                  {new Intl.NumberFormat("de-DE", {
-                    style: "currency",
-                    currency: "EUR",
+                  Harga :{' '}
+                  {new Intl.NumberFormat('de-DE', {
+                    style: 'currency',
+                    currency: 'EUR',
                   }).format(value?.harga)}
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <Link
-                    style={{ fontWeight: "bold" }}
-                    to={"/editCatalogue/" + value?._id}
-                  >
+                  <Link style={{ fontWeight: 'bold' }} to={'/editCatalogue/' + value?._id}>
                     Edit
                   </Link>
-                  <a
-                    style={{ marginLeft: 20, fontWeight: "bold" }}
-                    onClick={() => doDelete(value?._id)}
-                  >
+                  <a style={{ marginLeft: 20, fontWeight: 'bold' }} onClick={() => doDelete(value?._id)}>
                     Delete
                   </a>
                 </ListGroup.Item>

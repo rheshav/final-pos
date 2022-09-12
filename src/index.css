@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Khula&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 * {
-  font-family: 'Khula', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 body {
@@ -12,5 +12,6 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
 }
